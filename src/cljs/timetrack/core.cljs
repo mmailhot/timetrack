@@ -52,4 +52,6 @@
 (defn main []
   (-> js/document
       .-location
-      (set! "#/")))
+      (set! "#/"))
+  (sec/dispatch! "/")
+  )

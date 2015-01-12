@@ -22,7 +22,8 @@
                  [secretary "1.2.1"]]
 
   :plugins [[lein-cljsbuild "1.0.3"]
-            [lein-environ "1.0.0"]]
+            [lein-environ "1.0.0"]
+            [lein-sass "0.3.5"]]
 
   :min-lein-version "2.5.0"
 
@@ -36,6 +37,9 @@
                                         :externs       ["react/externs/react.js"]
                                         :optimizations :none
                                         :pretty-print  true}}}}
+
+  :sass {:src "resources/sass"
+         :output-dir "resources/public/css"}
 
   :profiles {:dev {:repl-options {:init-ns timetrack.server
                                   :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
