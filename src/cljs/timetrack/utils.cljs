@@ -1,13 +1,16 @@
 (ns timetrack.utils
   (:require [om.core :as om :include-macros true]
             [om-tools.dom :as dom :include-macros true]
-            [om-tools.core :refer-macros [defcomponent]]))
+            [om-tools.core :refer-macros [defcomponent]])
+  (:import [goog.ui IdGenerator]))
 
 (defn root-template [nodes]
   (dom/div {:className "container"}
            (dom/header {:className "main-header"}
                         (dom/h1 "Timetrack"))
            nodes))
+(defn guid []
+  (.getNextUniqueId (.getInstance IdGenerator)))
 
 ;;Duration Code
 (defn- rectify-seconds [{:keys [ hours minutes seconds]}]
