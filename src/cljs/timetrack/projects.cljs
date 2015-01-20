@@ -1,4 +1,5 @@
 (ns timetrack.projects
+  (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [om.core :as om :include-macros true]
             [om-tools.dom :as dom :include-macros true]
             [om-tools.core :refer-macros [defcomponent]]
@@ -35,20 +36,40 @@
         ))
     false))
 
+(defn destroy-project [app {:keys [id] :as project}]
+  (om/transact! app :projects
+                (fn [projects] (into [] (remove #(= (:id %) id) projects)))
+                [:delete id]))
+
+(defn handle-event [type app value]
+  (case type
+    :destroy (destroy-project app value)
+    nil))
+
 (defcomponent project-summary [project owner]
+  (init-state [_]
+              {:edit-text (:title todo)})
   (render-state
-   [_ state]
+   [_ {:keys [comm] :as state}]
    (dom/li {:class "project-sum-container"}
            (dom/div {:className "project-sum-header"}
                     (dom/h3 (:name project)))
            (dom/div {:className "project-sum-details"}
-                    (dom/p (str "Total Tasks: " (count (:tasks project)))
-                           (dom/br "")
-                           (str "Total Time: " (format-duration (total-time project))))))))
+                    (dom/p (str "Total Tasks: " (count (:tasks project)) " ")
+                           (str "Total Time: " (format-duration (total-time project)) " ")
+                           (dom/a {:onClick #(put! comm [:destroy @project])} "Delete"))))))
+
 
 (defcomponent project-page [app owner]
+  (will-mount
+   [_]
+   (let [comm (chan)]
+     (om/set-state! owner :comm comm)
+     (go (while true
+           (let [[type value] (<! comm)]
+             (handle-event type app value))))))
   (render-state
-   [_ state]
+   [_ {:keys [comm] :as state}]
    (root-template (dom/section {:className "project-list-container primary-container"}
                                (dom/h2 {:className "primary-header"} "Your Projects")
                                (dom/input {:ref "newProject"
@@ -57,4 +78,5 @@
                                            :onKeyDown #(handle-new-project-keydown % app owner)
                                            })
                                (om/build-all project-summary (:projects app)
-                                             {:key :id})))))
+                                             {:key :id
+                                              :init-state {:comm comm}})))))

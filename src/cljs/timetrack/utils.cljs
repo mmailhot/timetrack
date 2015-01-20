@@ -9,6 +9,7 @@
            (dom/header {:className "main-header"}
                         (dom/h1 "Timetrack"))
            nodes))
+
 (defn guid []
   (.getNextUniqueId (.getInstance IdGenerator)))
 
@@ -29,6 +30,9 @@
       rectify-minutes))
 
 (defn format-duration [d]
-  (if (== 0 (:hours d))
-    (str (:minutes d) "m" (:seconds d) "s")
-    (str (:hours d) "h" (:minutes d) "m")))
+  (if (some? (:hours d))
+    (if (== 0 (:hours d))
+      (str (:minutes d) "m" (:seconds d) "s")
+      (str (:hours d) "h" (:minutes d) "m"))
+    "0h0m"))
+
