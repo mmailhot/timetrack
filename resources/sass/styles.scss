@@ -53,6 +53,18 @@ body {
             float:right;
         }
     }
+    .project-edit-field{
+        display:none;
+    }
+    &.editing{
+        .view{
+            display:none;
+        }
+        .project-edit-field{
+            display:inline-block;
+        }
+        
+    }
 }
 
 .project-edit-field {

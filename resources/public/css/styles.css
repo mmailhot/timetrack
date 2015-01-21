@@ -37,6 +37,12 @@ body {
     text-transform: uppercase; }
   .project-sum-container .project-sum-details .project-sum-delete {
     float: right; }
+  .project-sum-container .project-edit-field {
+    display: none; }
+  .project-sum-container.editing .view {
+    display: none; }
+  .project-sum-container.editing .project-edit-field {
+    display: inline-block; }
 
 .project-edit-field {
   width: 100%;
