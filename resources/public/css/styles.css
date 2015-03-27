@@ -28,7 +28,14 @@ body {
     font-weight: normal;
     font-size: 32px;
     padding: 0;
-    margin: 0; }
+    margin: 0;
+    display: inline-block; }
+  .project-sum-container .project-sum-header .arrow-button {
+    color: #000;
+    text-decoration: none;
+    font-size: 32px;
+    display: inline-block;
+    float: right; }
   .project-sum-container .project-sum-details p {
     padding: 0;
     margin: 0;

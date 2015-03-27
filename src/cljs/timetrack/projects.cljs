@@ -92,9 +92,10 @@
                  (:editing project) (str "editing "))]
      (dom/li {:className class}
              (dom/div {:className "view"}
-                      (dom/div {:className "project-sum-header"
-                                :onDoubleClick #(edit % project owner comm)}
-                               (dom/h3 (:name project)))
+                      (dom/div {:className "project-sum-header"}
+                               (dom/h3 {:onDoubleClick #(edit % project owner comm)} (:name project))
+                               (dom/a {:href (str "#/project/" (:id project))
+                                       :class "arrow-button"} "⇨"))
                       (dom/div {:className "project-sum-details"}
                                (dom/p (str "Total Tasks: " (count (:tasks project)) " ")
                                       (str "Total Time: " (format-duration (total-time project)) " ")

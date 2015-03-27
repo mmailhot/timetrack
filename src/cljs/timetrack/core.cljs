@@ -6,7 +6,8 @@
             [goog.events :as events]
             [goog.history.EventType :as EventType]
             [timetrack.utils :refer [root-template]]
-            [timetrack.projects :refer [project-page]])
+            [timetrack.projects :refer [project-page]]
+            [timetrack.tasks :refer [project-view-page]])
   (:import goog.History))
 
 (sec/set-config! :prefix "#")
@@ -47,6 +48,11 @@
 (sec/defroute homepage "/" []
   (om/root project-page
            app-state
+           {:target (. js/document (getElementById "app"))}))
+
+(sec/defroute project-detail-page "/project/:pid" [pid]
+  (om/root project-view-page
+           (first (filter #(== (:id %) pid) (:projects app-state)))
            {:target (. js/document (getElementById "app"))}))
 
 (defn main []
